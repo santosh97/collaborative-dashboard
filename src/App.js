@@ -5,7 +5,8 @@ import './App.css'; // Import the color styling
 
 // Setup socket connection
 const token = localStorage.getItem('jwtToken');
-const socket = io('http://localhost:5000', { auth: { token } });
+const socket = io("https://collaborative-dashboard-backend.onrender.com", { auth: { token } });
+const API_URL ="https://collaborative-dashboard-backend.onrender.com/api"; //process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
 function App() {
   const [widgets, setWidgets] = useState([]);
@@ -17,30 +18,35 @@ function App() {
   useEffect(() => {
     fetchWidgets();
 
+    // Listen for real-time updates on widgets
     socket.on('widget-updated', (updatedWidget) => {
       setWidgets((prevWidgets) =>
         prevWidgets.map((widget) => (widget._id === updatedWidget._id ? updatedWidget : widget))
       );
     });
 
+    // Clean up the socket listener on component unmount
     return () => {
       socket.off('widget-updated');
     };
   }, []);
 
+  // Fetch widgets from the backend
   const fetchWidgets = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/widgets');
+      const response = await axios.get(`${API_URL}/widgets`);
       setWidgets(response.data);
     } catch (error) {
       console.error('Error fetching widgets:', error);
     }
   };
 
+  // Handle widget creation or update
   const handleCreateOrUpdateWidget = async () => {
     const widgetData = { title, description, type };
 
     if (selectedWidget) {
+      // Optimistic UI update
       setWidgets((prevWidgets) =>
         prevWidgets.map((widget) => (widget._id === selectedWidget._id ? { ...widget, ...widgetData } : widget))
       );
@@ -52,19 +58,21 @@ function App() {
       }
     } else {
       try {
-        const response = await axios.post('http://localhost:5000/api/widgets', widgetData);
+        const response = await axios.post(`${API_URL}/widgets`, widgetData);
         setWidgets([...widgets, response.data]);
       } catch (error) {
         console.error('Failed to create widget:', error);
       }
     }
 
+    // Reset input fields
     setTitle('');
     setDescription('');
     setType('');
     setSelectedWidget(null);
   };
 
+  // Pre-fill form fields for editing a widget
   const handleEditWidget = (widget) => {
     setSelectedWidget(widget);
     setTitle(widget.title);
@@ -72,9 +80,11 @@ function App() {
     setType(widget.type);
   };
 
+  // Delete widget
   const handleDeleteWidget = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/widgets/${id}`);
+      await axios.delete(`${API_URL}/widgets/${id}`);
+      setWidgets(widgets.filter(widget => widget._id !== id));
     } catch (error) {
       console.error('Failed to delete widget:', error);
     }
@@ -125,7 +135,7 @@ function App() {
       <div className="widgets-list">
         {widgets.map((widget) => (
           <div key={widget._id} className="widget-card">
-            {/* Widget Data Display with Proper Labeling */}
+            {/* Display widget data with labels */}
             <div className="widget-field">
               <strong>Title:</strong> {widget.title}
             </div>
