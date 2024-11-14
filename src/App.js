@@ -5,7 +5,7 @@ import './App.css'; // Import the color styling
 
 // Setup socket connection
 const token = localStorage.getItem('jwtToken');
-const socket = io("https://collaborative-dashboard-backend.onrender.com", { auth: { token } });
+const socket = io("https://collaborative-dashboard-backend.onrender.com" || 'http://localhost:5000', { auth: { token } });
 const API_URL ="https://collaborative-dashboard-backend.onrender.com/api"; //process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
 function App() {
