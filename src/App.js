@@ -127,7 +127,7 @@ const App = () => {
     if (selectedWidget) {
       try {
         const response = await api.put(`/widgets/${selectedWidget._id}`, widgetData);
-        setWidgets(widgets.map(widget => (widget._id === selectedWidget._id ? { ...widget, ...widgetData } : widget)));
+        // setWidgets(widgets.map(widget => (widget._id === selectedWidget._id ? { ...widget, ...widgetData } : widget)));
         socket.emit('widget:update', response.data); // Emit update event
         setSelectedWidget(null);
       } catch (err) {
@@ -136,7 +136,7 @@ const App = () => {
     } else {
       try {
         const response = await api.post('/widgets', widgetData);
-        setWidgets([...widgets, response.data]);
+        // setWidgets([...widgets, response.data]);
         socket.emit('widget:create', response.data); // Emit create event
       } catch (err) {
         setError('Failed to create widget');
@@ -162,7 +162,7 @@ const App = () => {
     try {
       await api.delete(`/widgets/${id}`);
       socket.emit('widget:delete', id); // Emit delete event
-      setWidgets(widgets.filter(widget => widget._id !== id));
+      // setWidgets(widgets.filter(widget => widget._id !== id));
     } catch (err) {
       setError('Failed to delete widget');
     }
