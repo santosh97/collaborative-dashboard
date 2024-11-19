@@ -1,4 +1,14 @@
-/* Styling for the Dashboard */
+/* App.css */
+
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* App Container */
 .app-container {
   background-color: #f4f6f9;
   display: flex;
@@ -7,12 +17,14 @@
   padding: 20px;
 }
 
+/* Title */
 .title {
   font-size: 2.5em;
   color: #4a90e2;
   margin-bottom: 20px;
 }
 
+/* Input Section */
 .input-container {
   margin: 20px 0;
   display: flex;
@@ -56,6 +68,11 @@ textarea.input {
   cursor: pointer;
 }
 
+.button:hover {
+  background-color: #357ab7;
+}
+
+/* Widgets Section */
 .widgets-list {
   display: flex;
   flex-wrap: wrap;
@@ -94,4 +111,37 @@ textarea.input {
   margin-top: 5px;
   background-color: #e94e77;
   font-weight: bold;
+}
+
+.widget-card .button:hover {
+  background-color: #d03f5f;
+}
+
+/* Style for the logout button */
+.logout-button {
+  background-color: #e74c3c;
+  /* Red color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+  display: inline-block;
+}
+
+.logout-button:hover {
+  background-color: #c0392b;
+  /* Darker red on hover */
+}
+
+.logout-button:focus {
+  outline: none;
+}
+
+.logout-button:active {
+  background-color: #9b2d20;
+  /* Even darker red when clicked */
 }
